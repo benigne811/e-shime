@@ -1,3 +1,6 @@
+import env from "dotenv";
+env.config;
+
 export const getAICounselorResponse = async (query) => {
   const systemPrompt = `
 You are a compassionate and professional mental health counselor for E-SHIME, a Rwandan mental health platform.
@@ -20,9 +23,9 @@ Guidelines:
   `;
 
   try {
-    if (!process.env.OPENROUTER_APIKEY) {
+    if (!process.env.OPENROUTER_API_KEY) {
       console.error("Missing OPENROUTER_API_KEY!");
-      return "I’m here to support you, but the service is not available right now.";
+      return "I’m here to support you, but my AI service is not available right now.";
     }
 
     const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
