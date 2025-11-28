@@ -7,8 +7,6 @@ import pool, { testConnection } from './config/database.js';
 import { getAICounselorResponse } from './services/aiService.js';
 import Message from './models/Message.js';
 import jwt from 'jsonwebtoken';
-
-// Import routes
 import authRoutes from './routes/auth.js';
 import moodRoutes from './routes/mood.js';
 import storyRoutes from './routes/stories.js';
@@ -32,8 +30,6 @@ const io = new Server(httpServer, {
 });
 
 const PORT = process.env.PORT || 5000;
-
-// Middleware
 app.use(
   cors({
     origin:"*",
@@ -42,13 +38,10 @@ app.use(
 );
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
-// Health check
 app.get('/health', (req, res) => {
   res.json({ status: 'OK', message: 'E-SHIME Backend is running' });
 });
 
-// API Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/mood', moodRoutes);
 app.use('/api/story', storyRoutes);
@@ -60,7 +53,6 @@ app.use('/api/getTherapistMessages', therapistMessageRoute);
 app.use('/api/art', artRoute);
 app.use('/api/poetry', poetryRoute);
 
-// Socket.IO Authentication Middleware
 io.use((socket, next) => {
   const token = socket.handshake.auth.token;
 
@@ -80,18 +72,13 @@ io.use((socket, next) => {
   }
 });
 
-// Handle peer support messages
-// Simple Messenger-Style Socket Logic
-
 io.on('connection', socket => {
   const userId = socket.user.id;
-
-  // Join personal room for AI therapist
+console.log(`user ${userId} connected to the sockets`);
   const therapistRoom = `therapist-${userId}`;
   socket.join(therapistRoom);
   console.log(`User ${userId} joined AI therapist room ${therapistRoom}`);
 
-  // Handle messages to AI therapist
   socket.on('send-therapist-message', async (newMessage) => {
     const userMsg = {
       id: newMessage.id,
@@ -103,7 +90,6 @@ io.on('connection', socket => {
 
     await Message.createTherapist(userMsg);
 
-    // AI response
     try {
       const aiResponseText = await getAICounselorResponse(newMessage.text);
       const aiMessage = {
@@ -125,20 +111,17 @@ io.on('connection', socket => {
     }
   });
 
-  // Handle peer support messages
   socket.on('send-peer-message', async (newMessage) => {
     const msg = { id: newMessage.id, text: newMessage.text };
     socket.broadcast.emit('receive-peer-messages', msg);
     await Message.create(newMessage);
   });
 
-  // Disconnect
   socket.on('disconnect', () => {
     console.log(`User disconnected: ${userId}`);
   });
 });
 
-// Error handling middleware
 app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(500).json({
@@ -148,7 +131,6 @@ app.use((err, req, res, next) => {
   });
 });
 
-// 404 handler
 app.use((req, res) => {
   res.status(404).json({
     success: false,
@@ -156,10 +138,8 @@ app.use((req, res) => {
   });
 });
 
-// Start server
 const startServer = async () => {
   try {
-    // Test database connection
     const dbConnected = await testConnection();
 
     if (!dbConnected) {
@@ -168,8 +148,6 @@ const startServer = async () => {
       );
       process.exit(1);
     }
-
-    // Start listening
     httpServer.listen(PORT, () => {
       console.log(`
 ╔════════════════════════════════════════╗

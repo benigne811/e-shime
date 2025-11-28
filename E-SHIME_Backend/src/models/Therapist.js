@@ -1,8 +1,5 @@
 import pool from '../config/database.js';
 
-/**
- * Therapist helpers
- */
 export const createTherapist = async (therapistData) => {
   const { name, specialization, languages, experience, rating, avatar } = therapistData;
 
@@ -20,7 +17,6 @@ export const getAllTherapists = async () => {
     'SELECT id, name, specialization, languages, experience, rating, avatar, status FROM therapists ORDER BY name'
   );
 
-  // Parse JSON languages field
   return rows.map(row => ({
     ...row,
     languages: JSON.parse(row.languages)
@@ -71,9 +67,6 @@ export const getTherapistStats = async () => {
   };
 };
 
-/**
- * Booking helpers
- */
 export const createBooking = async (userId, bookingData) => {
   const { therapist_id, booking_date, booking_time } = bookingData;
 
@@ -141,7 +134,6 @@ export const getBookingStats = async () => {
   };
 };
 
-// Backwards-compatible named exports as objects
 export const Therapist = {
   create: createTherapist,
   getAll: getAllTherapists,

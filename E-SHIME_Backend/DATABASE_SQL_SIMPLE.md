@@ -1,11 +1,11 @@
 # Simple SQL Setup Script
 
 ```sql
--- Create database
+
 CREATE DATABASE IF NOT EXISTS eshime_db;
 USE eshime_db;
 
--- Table: users
+
 CREATE TABLE IF NOT EXISTS users (
   id INT AUTO_INCREMENT PRIMARY KEY,
   name VARCHAR(255) NOT NULL,
@@ -16,7 +16,6 @@ CREATE TABLE IF NOT EXISTS users (
   updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
--- Table: therapists
 CREATE TABLE IF NOT EXISTS therapists (
   id INT AUTO_INCREMENT PRIMARY KEY,
   name VARCHAR(255) NOT NULL,
@@ -30,7 +29,6 @@ CREATE TABLE IF NOT EXISTS therapists (
   updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
--- Table: stories
 CREATE TABLE IF NOT EXISTS stories (
   id INT AUTO_INCREMENT PRIMARY KEY,
   title VARCHAR(255) NOT NULL,
@@ -38,7 +36,6 @@ CREATE TABLE IF NOT EXISTS stories (
   created_at DATETIME DEFAULT CURRENT_TIMESTAMP
 );
 
--- Table: mood_logs
 CREATE TABLE IF NOT EXISTS mood_logs (
   id INT AUTO_INCREMENT PRIMARY KEY,
   user_id INT NOT NULL,
@@ -49,7 +46,6 @@ CREATE TABLE IF NOT EXISTS mood_logs (
   FOREIGN KEY (user_id) REFERENCES users(id)
 );
 
--- Table: peermessages
 CREATE TABLE IF NOT EXISTS messages (
   id INT AUTO_INCREMENT PRIMARY KEY,
   sender_id INT NOT NULL,
@@ -62,7 +58,6 @@ CREATE TABLE IF NOT EXISTS messages (
   FOREIGN KEY (receiver_id) REFERENCES users(id)
 );
 
--- Table: therapist messages
 CREATE TABLE IF NOT EXISTS therapistMessages (
   id INT AUTO_INCREMENT PRIMARY KEY,
   sender_id INT NOT NULL,
@@ -75,7 +70,6 @@ CREATE TABLE IF NOT EXISTS therapistMessages (
   FOREIGN KEY (receiver_id) REFERENCES users(id)
 );
 
--- Table: bookings
 CREATE TABLE IF NOT EXISTS bookings (
   id INT AUTO_INCREMENT PRIMARY KEY,
   user_id INT NOT NULL,
@@ -89,7 +83,6 @@ CREATE TABLE IF NOT EXISTS bookings (
   FOREIGN KEY (therapist_id) REFERENCES therapists(id)
 );
 
--- Table: story_likes
 CREATE TABLE IF NOT EXISTS story_likes (
   id INT AUTO_INCREMENT PRIMARY KEY,
   story_id INT NOT NULL,
@@ -99,8 +92,6 @@ CREATE TABLE IF NOT EXISTS story_likes (
   FOREIGN KEY (story_id) REFERENCES stories(id),
   FOREIGN KEY (user_id) REFERENCES users(id)
 );
-
--- Table: story_comments
 CREATE TABLE IF NOT EXISTS story_comments (
   id INT AUTO_INCREMENT PRIMARY KEY,
   story_id INT NOT NULL,
@@ -133,6 +124,5 @@ CREATE TABLE IF NOT EXISTS artStories (
 
 
 
--- major fix
 ALTER TABLE therapistMessages MODIFY room_type TEXT NULL;
 ```

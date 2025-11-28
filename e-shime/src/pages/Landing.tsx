@@ -98,13 +98,6 @@ export function Landing({ darkMode }: LandingProps) {
                   className="w-full h-auto"
                 />
               </div>
-              <motion.div
-                animate={{ y: [0, -10, 0] }}
-                transition={{ duration: 3, repeat: Infinity }}
-                className={`absolute -bottom-6 -right-6 ${darkMode ? 'bg-gray-800' : 'bg-white'} rounded-full p-6 shadow-xl hidden md:block`}
-              >
-                <Music className={`h-12 w-12 ${darkMode ? 'text-beige' : 'text-black'}`} />
-              </motion.div>
             </motion.div>
           </div>
         </div>

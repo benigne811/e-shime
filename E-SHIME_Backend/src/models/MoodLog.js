@@ -1,8 +1,5 @@
 import pool from '../config/database.js';
 
-/**
- * Create a mood log entry
- */
 export const createMoodLog = async (req,res) => {
   const {userid,mood_value, mood_label, journal_note } = req.body;
   console.log(userid ,mood_value, mood_label, journal_note);
@@ -17,13 +14,9 @@ export const createMoodLog = async (req,res) => {
 
   return res.json({message: "moodLog data saved!", results: result });
 }; 
-
-/**
- * Get mood logs for a user
- */
 export const getMoodLogsByUserId = async (userId, res) => {
   try {
-    // Validate userId
+    
     if (!userId) {
       return res.status(400).json({
         error: "userId is required"
@@ -39,7 +32,6 @@ export const getMoodLogsByUserId = async (userId, res) => {
       [userId]
     );
 
-    // If table exists but no rows → respond normally
     if (rows.length === 0) {
       return res.json({
         message: "No mood logs found",
@@ -56,7 +48,6 @@ export const getMoodLogsByUserId = async (userId, res) => {
   } catch (error) {
     console.error("❌ Database Error (getMoodLogsByUserId):", error);
 
-    // Fallback for unexpected issues
     return res.status(500).json({
       error: "Internal Server Error retrieving mood logs",
       details: error.message
@@ -64,9 +55,7 @@ export const getMoodLogsByUserId = async (userId, res) => {
   }
 };
 
-/**
- * Get mood log by ID
- */
+
 export const getMoodLogById = async (id, userId) => {
   const [rows] = await pool.execute(
     'SELECT * FROM mood_logs WHERE id = ? AND user_id = ?',
@@ -75,9 +64,6 @@ export const getMoodLogById = async (id, userId) => {
   return rows[0];
 };
 
-/**
- * Get mood statistics for a user
- */
 export const getUserMoodStats = async (userId, days = 30,res) => {
   const [rows] = await pool.execute(
     `SELECT 
@@ -95,9 +81,6 @@ export const getUserMoodStats = async (userId, days = 30,res) => {
   return res.json({rows:rows});
 };
 
-/**
- * Get average mood for user
- */
 export const getAverageMood = async (userId, days = 7) => {
   const [rows] = await pool.execute(
     `SELECT AVG(mood_value) as average_mood
@@ -109,9 +92,6 @@ export const getAverageMood = async (userId, days = 7) => {
   return rows[0]?.average_mood || 0;
 };
 
-/**
- * Get mood distribution (for admin dashboard)
- */
 export const getMoodDistribution = async (days = 30) => {
   const [rows] = await pool.execute(
     `SELECT 
@@ -127,9 +107,6 @@ export const getMoodDistribution = async (days = 30) => {
   return rows;
 };
 
-/**
- * Delete mood log
- */
 export const deleteMoodLog = async (id, userId) => {
   const [result] = await pool.execute(
     'DELETE FROM mood_logs WHERE id = ? AND user_id = ?',
@@ -138,7 +115,6 @@ export const deleteMoodLog = async (id, userId) => {
   return result.affectedRows > 0;
 };
 
-// Backwards-compatible default export
 const MoodLog = {
   create: createMoodLog,
   getByUserId: getMoodLogsByUserId,

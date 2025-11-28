@@ -2,9 +2,6 @@ import pool from '../config/database.js';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 
-/**
- * Create a new user
- */
 export const createUser = async (res, username , email, password) => {
 
 
@@ -30,10 +27,6 @@ export const createUser = async (res, username , email, password) => {
   return res.status(201).json({ message: "Sign Up successfully" });
 
 };
-
-/**
- * Find user by email
- */
 export const findUserByEmail = async email => {
   const [rows] = await pool.execute('SELECT * FROM users WHERE email = ?', [
     email,
@@ -41,9 +34,6 @@ export const findUserByEmail = async email => {
   return rows[0];
 };
 
-/**
- * Find user by ID
- */
 export const findUserById = async id => {
   const [rows] = await pool.execute(
     'SELECT id, name, email, role, created_at, updated_at FROM users WHERE id = ?',
@@ -52,9 +42,6 @@ export const findUserById = async id => {
   return rows[0];
 };
 
-/**
- * Update user
- */
 export const updateUser = async (id, userData) => {
   const fields = [];
   const values = [];
@@ -85,17 +72,11 @@ export const updateUser = async (id, userData) => {
   return result.affectedRows > 0;
 };
 
-/**
- * Delete user
- */
 export const deleteUser = async id => {
   const [result] = await pool.execute('DELETE FROM users WHERE id = ?', [id]);
   return result.affectedRows > 0;
 };
 
-/**
- * Get all users (admin only)
- */
 export const getAllUsers = async (limit = 50, offset = 0) => {
   const [rows] = await pool.execute(
     'SELECT id, name, email, role, created_at FROM users ORDER BY created_at DESC LIMIT ? OFFSET ?',
@@ -104,9 +85,6 @@ export const getAllUsers = async (limit = 50, offset = 0) => {
   return rows;
 };
 
-/**
- * Get user statistics
- */
 export const getUserStats = async () => {
   const [totalUsers] = await pool.execute(
     'SELECT COUNT(*) as count FROM users WHERE role = "user"'
@@ -122,9 +100,6 @@ export const getUserStats = async () => {
   };
 };
 
-/**
- * Verify password
- */
 export const verifyUser = async (res,email, password) => {
   if (!email || !password) {
     return res.status(400).json({ error: 'Missing email or password' });
@@ -172,7 +147,6 @@ export const verifyUser = async (res,email, password) => {
   });
 };
 
-// Backwards-compatible default export
 const User = {
   create: createUser,
   findByEmail: findUserByEmail,

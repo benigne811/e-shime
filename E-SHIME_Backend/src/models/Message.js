@@ -1,23 +1,17 @@
 import pool from '../config/database.js';
 
-/**
- * Save a chat message
- */
 export const createMessage = async messageData => {
   try {
-    // Check if payload exists
     if (!messageData) {
       throw new Error('No message data provided.');
     }
 
     const { id, text, sender } = messageData;
 
-    // Validate required fields
     if (!id) throw new Error('sender_id is required.');
     if (!text) throw new Error('message_text is required.');
     if (!sender) throw new Error('sender_type is required.');
 
-    // Optional type validation
     if (typeof text !== 'string') {
       throw new Error('message_text must be a string.');
     }
@@ -38,7 +32,6 @@ export const createMessage = async messageData => {
   } catch (err) {
     console.error('🔥 Error inserting message:', err.message);
 
-    // Return standardized error object instead of crashing server
     return {
       success: false,
       error: err.message || 'Unknown error occurred while saving message.',
@@ -48,7 +41,6 @@ export const createMessage = async messageData => {
 
 export const createTherapistMessage = async messageData => {
   try {
-    // Check if payload exists
     if (!messageData) {
       throw new Error('No message data provided.');
     }
@@ -58,14 +50,10 @@ export const createTherapistMessage = async messageData => {
     console.log(messageData);
 
 
-
-    // Validate required fields
     if (!id) throw new Error('sender_id is required.');
     if (!text) throw new Error('message_text is required.');
     if (!sender) throw new Error('sender_type is required.');
     if (!room) throw new Error('room is required.');
-
-    // Optional type validation
     if (typeof text !== 'string') {
       throw new Error('message_text must be a string.');
     }
@@ -85,18 +73,12 @@ export const createTherapistMessage = async messageData => {
     };
   } catch (err) {
     console.error('🔥 Error inserting message:', err.message);
-
-    // Return standardized error object instead of crashing server
     return {
       success: false,
       error: err.message || 'Unknown error occurred while saving message.',
     };
   }
 };
-
-/**
- * Get messages for a room (therapist or peer chat)
- */
 export const getMessages = async (req, res) => {
   try {
     const [rows] = await pool.execute(
@@ -134,7 +116,7 @@ export const getTherapistMessages = async (userId, req, res) => {
        FROM therapistMessages
        WHERE room_type = ?
        ORDER BY created_at ASC`,
-      [`therapist-${userId}`] // assuming room_type is 'therapist-{userId}'
+      [`therapist-${userId}`] 
     );
 
     console.log(rows.reverse());
@@ -151,10 +133,6 @@ export const getTherapistMessages = async (userId, req, res) => {
     });
   }
 };
-
-/**
- * Get private messages between two users
- */
 export const getPrivateMessages = async (userId1, userId2, limit = 50) => {
   const [rows] = await pool.execute(
     `SELECT m.*, u.name as sender_name
@@ -169,9 +147,6 @@ export const getPrivateMessages = async (userId1, userId2, limit = 50) => {
   return rows.reverse();
 };
 
-/**
- * Get recent chat rooms for a user
- */
 export const getRecentRooms = async userId => {
   const [rows] = await pool.execute(
     `SELECT DISTINCT 
@@ -189,10 +164,6 @@ export const getRecentRooms = async userId => {
   );
   return rows;
 };
-
-/**
- * Delete old messages (cleanup)
- */
 export const deleteOldMessages = async (days = 90) => {
   const [result] = await pool.execute(
     'DELETE FROM messages WHERE created_at < DATE_SUB(NOW(), INTERVAL ? DAY)',
@@ -201,9 +172,6 @@ export const deleteOldMessages = async (days = 90) => {
   return result.affectedRows;
 };
 
-/**
- * Get message statistics
- */
 export const getMessageStats = async () => {
   const [total] = await pool.execute('SELECT COUNT(*) as count FROM messages');
 
@@ -222,7 +190,6 @@ export const getMessageStats = async () => {
   };
 };
 
-// Backwards-compatible default export
 const Message = {
   create: createMessage,
   createTherapist: createTherapistMessage,

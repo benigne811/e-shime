@@ -76,18 +76,6 @@ export function CrisisButton({ darkMode }: CrisisButtonProps) {
                     114 (Toll-free)
                   </a>
                 </div>
-
-                <div className={`p-4 rounded-lg ${darkMode ? 'bg-gray-700' : 'bg-[#F5F5DC]'}`}>
-                  <div className="flex items-center gap-3 mb-2">
-                    <MessageSquare className={`h-5 w-5 ${darkMode ? 'text-white' : 'text-black'}`} />
-                    <h4 className={darkMode ? 'text-white' : 'text-black'}>Crisis Chat</h4>
-                  </div>
-                  <p className={`text-sm ${darkMode ? 'text-gray-300' : 'text-gray-700'} mb-3`}>
-                    Connect with a trained counselor immediately
-                  </p>
-                  <Button className="w-full">Start Crisis Chat</Button>
-                </div>
-
                 <div className={`p-4 rounded-lg border-2 ${darkMode ? 'border-red-500 bg-red-900/20' : 'border-red-500 bg-red-50'}`}>
                   <p className={`text-sm ${darkMode ? 'text-gray-200' : 'text-gray-800'}`}>
                     <strong>If you're in immediate danger:</strong> Call emergency services at <strong>112</strong> or go to the nearest hospital.

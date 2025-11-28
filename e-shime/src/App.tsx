@@ -23,7 +23,6 @@ function App() {
   const [isAdmin, setIsAdmin] = useState(false);
 
   useEffect(() => {
-    // Check authentication status
     const userData = localStorage.getItem('eshime_user');
     const adminData = localStorage.getItem('eshime_admin');
     
@@ -34,13 +33,10 @@ function App() {
       }
     }
 
-    // Check dark mode preference
     const savedDarkMode = localStorage.getItem('eshime_dark_mode');
     if (savedDarkMode === 'true') {
       setDarkMode(true);
     }
-
-    // Simulate initial loading
     setTimeout(() => {
       setIsLoading(false);
     }, 2000);
@@ -52,7 +48,6 @@ function App() {
     localStorage.setItem('eshime_dark_mode', newMode.toString());
   };
 
-  // Protected Route Component
   const ProtectedRoute = ({ children, adminOnly = false }: { children: React.ReactNode; adminOnly?: boolean }) => {
     const userData = localStorage.getItem('eshime_user');
     const adminData = localStorage.getItem('eshime_admin');
@@ -68,7 +63,7 @@ function App() {
     return <>{children}</>;
   };
 
-  // Public Route Component (redirect if already logged in)
+ 
   const PublicRoute = ({ children }: { children: React.ReactNode }) => {
     const userData = localStorage.getItem('eshime_user');
     const adminData = localStorage.getItem('eshime_admin');

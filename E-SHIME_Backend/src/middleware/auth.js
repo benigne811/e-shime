@@ -16,9 +16,6 @@ export const generateToken = (payload) => {
   });
 };
 
-/**
- * Verify JWT token middleware
- */
 export const verifyToken = (req, res, next) => {
   try {
     const token = req.headers.authorization?.split(' ')[1]; // Bearer <token>
@@ -41,9 +38,6 @@ export const verifyToken = (req, res, next) => {
   }
 };
 
-/**
- * Check if user is admin
- */
 export const isAdmin = (req, res, next) => {
   if (req.user && req.user.role === 'admin') {
     next();
@@ -55,9 +49,6 @@ export const isAdmin = (req, res, next) => {
   }
 };
 
-/**
- * Check if user is therapist
- */
 export const isTherapist = (req, res, next) => {
   if (req.user && (req.user.role === 'therapist' || req.user.role === 'admin')) {
     next();

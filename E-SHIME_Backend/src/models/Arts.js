@@ -1,8 +1,6 @@
 import pool from '../config/database.js';
 
-/**
- * Create a new art story
- */
+
 export const createArtStory = async (req, res) => {
   try {
     const { title, content, media_url } = req.body;
@@ -21,10 +19,6 @@ export const createArtStory = async (req, res) => {
   }
 };
 
-
-/**
- * Get all art stories (paginated)
- */
 export const getAllArtStories = async (req, res) => {
   try {
     const [rows] = await pool.execute(

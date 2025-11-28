@@ -1,8 +1,5 @@
 import pool from '../config/database.js';
 
-/**
- * Create a new story
- */
 export const createStory = async (req, res) => {
   try {
     const { title, content } = req.body;
@@ -27,8 +24,6 @@ export const createStory = async (req, res) => {
   }
 };
 
-
-// Get all stories
 export const getAllStories = async (req, res) => {
   try {
     const [rows] = await pool.execute(
@@ -44,11 +39,6 @@ export const getAllStories = async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 };
-/**
- * Get story by ID
- */
-
-// Backwards-compatible default export
 const Story = {
   create: createStory,
   getAll: getAllStories,

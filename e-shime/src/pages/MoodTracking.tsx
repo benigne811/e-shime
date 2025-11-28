@@ -261,25 +261,6 @@ export function MoodTracking({ darkMode }: MoodTrackingProps) {
             </Card>
 
             {/* Tips Section */}
-            <Card
-              className={`${
-                darkMode ? 'bg-gray-800 border-gray-700' : 'bg-white'
-              } p-6 mt-6`}
-            >
-              <h3 className={`${darkMode ? 'text-white' : 'text-black'} mb-4`}>
-                Tracking Tips
-              </h3>
-              <ul
-                className={`space-y-3 ${
-                  darkMode ? 'text-gray-300' : 'text-gray-700'
-                }`}
-              >
-                <li>• Track your mood daily for consistency</li>
-                <li>• Be honest with yourself</li>
-                <li>• Use journal notes to spot emotional patterns</li>
-                <li>• Celebrate good days, be kind on tough ones</li>
-              </ul>
-            </Card>
           </motion.div>
 
           {/* Right Side: Mood Graph */}

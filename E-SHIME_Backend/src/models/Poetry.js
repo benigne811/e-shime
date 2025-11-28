@@ -1,8 +1,5 @@
 import pool from '../config/database.js';
 
-/**
- * Create a new poetry story
- */
 export const createPoetryStory = async (req, res) => {
   try {
     const { title, content } = req.body;
@@ -21,10 +18,6 @@ export const createPoetryStory = async (req, res) => {
   }
 };
 
-
-/**
- * Get all poetry stories (paginated)
- */
 export const getAllPoetryStories = async (req, res) => {
   try {
  
